@@ -1,0 +1,4 @@
+external-dns:
+  txtOwnerId: "Z00651098F7YS0J2Z27A"
+  serviceAccount:
+    annotations: { eks.amazonaws.com/role-arn: "" }
