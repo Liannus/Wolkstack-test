@@ -1,10 +1,10 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kuard
+  name: wolkstack
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/issuer: "letsencrypt-prod"
+    cert-manager.io/issuer: "letsencrypt-staging"
 
 spec:
   tls:
@@ -12,9 +12,21 @@ spec:
         - "{{ .Values.domain_name }}"
       secretName: wolkstack-deployment-secret
   rules:
-    - host: "{{ .Values.Domain_name }}"
+    - host: "{{ .Values.domain_name }}"
       http:
         paths:
-          - backend:
-              serviceName: kuard
-              servicePort: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 3000
+
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 5000

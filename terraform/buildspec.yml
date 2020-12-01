@@ -29,9 +29,9 @@ phases:
   build: # Build Docker image and tag it with the commit sha
     commands:
       - echo Building dockerfiles...
-      - docker build . -t $DOCKER_HUB_USERNAME/wolkstack:frontend -f ./apps/frontend/Dockerfile
-      - docker build . -t $DOCKER_HUB_USERNAME/wolkstack:backend -f  ./apps/backend/Dockerfile
-      - docker build . -t $DOCKER_HUB_USERNAME/wolkstack:database -f  ./apps/database/Dockerfile
+      - docker build ./apps/frontend -t $DOCKER_HUB_USERNAME/wolkstack:frontend -f ./apps/frontend/Dockerfile
+      - docker build ./apps/backend -t $DOCKER_HUB_USERNAME/wolkstack:backend -f  ./apps/backend/Dockerfile
+      - docker build ./apps/database -t $DOCKER_HUB_USERNAME/wolkstack:database -f  ./apps/database/Dockerfile
 
       - echo tagging dockerfiles...
       - docker tag $DOCKER_HUB_USERNAME/wolkstack:frontend $DOCKER_HUB_USERNAME/wolkstack:frontend

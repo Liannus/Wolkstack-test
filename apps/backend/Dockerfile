@@ -6,7 +6,7 @@ ENV NODE_ENV ${ENV}
 RUN mkdir /backend
 WORKDIR /backend
 
-COPY package*.json ./
+COPY ./package*.json ./
 RUN yarn install
 
 COPY . . 
