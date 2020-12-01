@@ -45,4 +45,4 @@ phases:
       - docker push $DOCKER_HUB_USERNAME/wolkstack:database
 
       - echo Deploying applications...
-      - helm upgrade wolkstack_apps ./helm/appChart
+      - helm upgrade wolkstack-apps ./helm/appChart

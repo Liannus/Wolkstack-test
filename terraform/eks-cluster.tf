@@ -1,7 +1,7 @@
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
-  cluster_version = "1.17"
+  cluster_version = "1.18"
   subnets         = module.vpc.private_subnets
   kubeconfig_name = "wolkstack-kubeconfig"
   map_roles       = [{ "groups" : ["system:masters"], "rolearn" : aws_iam_role.deploy_apps.arn, "username" : aws_iam_role.deploy_apps.name }]

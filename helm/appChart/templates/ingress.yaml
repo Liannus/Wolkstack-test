@@ -1,10 +1,10 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: wolkstack
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/issuer: "letsencrypt-staging"
+    cert-manager.io/issuer: "letsencrypt-prod"
 
 spec:
   tls:
@@ -18,15 +18,11 @@ spec:
           - path: /
             pathType: Prefix
             backend:
-              service:
-                name: frontend
-                port:
-                  number: 3000
+              serviceName: frontend
+              servicePort: 3000
 
           - path: /api
             pathType: Prefix
             backend:
-              service:
-                name: backend
-                port:
-                  number: 5000
+              serviceName: backend
+              servicePort: 5000

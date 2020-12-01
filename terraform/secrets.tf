@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "docker-hub-username" {
-  name        = "/docker-hub-password"
+  name        = "/docker-hub-username"
   description = "The parameter description"
   type        = "SecureString"
   value       = var.docker_hub_username

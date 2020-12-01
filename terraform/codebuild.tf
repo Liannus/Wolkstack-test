@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "codebuild" {
-  bucket = "deploy_apps"
+  bucket = "deploy-apps2"
   acl    = "private"
 }
 
@@ -73,8 +73,7 @@ resource "aws_iam_role_policy" "deploy_apps" {
         "s3:*"
       ],
       "Resource": [
-        "${aws_s3_bucket.codebuild.arn}",
-        "${aws_s3_bucket.codebuild.arn}/*"
+        "*"
       ]
     }
   ]

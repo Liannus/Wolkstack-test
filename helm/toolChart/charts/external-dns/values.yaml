@@ -363,7 +363,7 @@ logLevel: debug
 logFormat: text
 ## Modify how DNS records are sychronized between sources and providers (options: sync, upsert-only)
 ##
-policy: upsert-only
+policy: sync
 ## Registry Type. Available types are: txt, noop
 ## ref: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/proposal/registry.md
 ##
@@ -470,10 +470,7 @@ serviceAccount:
   name:
   ## Annotations for the Service Account
   ##
-  annotations:
-    {
-      eks.amazonaws.com/role-arn: "arn:aws:iam::310098748428:role/external_dns",
-    }
+  annotations: {}
 
 ## RBAC parameteres (clusterRole and clusterRoleBinding)
 ## https://kubernetes.io/docs/reference/access-authn-authz/rbac/

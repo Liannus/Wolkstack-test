@@ -33,12 +33,16 @@ variable "repository_name" {
 
 variable "docker_hub_username" {
   description = "docker-hub username"
-  default     = "liannus"
+  default     = "Liannus"
   type        = string
 }
 
 variable "docker_hub_password" {
   description = "docker-hub password FILL THROUGH ENV VARIABLES FOR SECURITY"
+  type        = string
+}
+variable "github_token" {
+  description = "Github token FILL THROUGH ENV VARIABLES FOR SECURITY"
   type        = string
 }
 

@@ -1,11 +1,11 @@
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "deploy_apps"
+  bucket = "deploy-apps1"
   acl    = "private"
 }
 
 resource "aws_codepipeline" "deploy_apps" {
   name     = "tf-test-pipeline"
-  role_arn = aws_iam_role.deploy_apps.arn
+  role_arn = aws_iam_role.deploy_apps_codepipeline.arn
 
   artifact_store {
     location = aws_s3_bucket.codepipeline_bucket.bucket
@@ -29,6 +29,7 @@ resource "aws_codepipeline" "deploy_apps" {
         "Owner"                = var.repository_owner
         "Repo"                 = var.repository_name
         "Branch"               = var.repository_branch
+        "OAuthToken"           = var.github_token
         "PollForSourceChanges" = "false"
       }
     }
@@ -60,6 +61,59 @@ resource "aws_codepipeline" "deploy_apps" {
       }
     }
   }
+}
+
+resource "aws_iam_role" "deploy_apps_codepipeline" {
+  name = "codepipeline-deploy-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "codepipeline_policy" {
+  name = "codepipeline_policy"
+  role = aws_iam_role.deploy_apps_codepipeline.id
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect":"Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:GetBucketVersioning",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "${aws_s3_bucket.codepipeline_bucket.arn}",
+        "${aws_s3_bucket.codepipeline_bucket.arn}/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
 # A shared secret between GitHub and AWS that allows AWS
