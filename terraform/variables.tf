@@ -23,7 +23,7 @@ variable "repository_branch" {
 
 variable "repository_owner" {
   description = "GitHub repository owner"
-  default     = "liannus"
+  default     = "Liannus"
 }
 
 variable "repository_name" {
@@ -33,7 +33,7 @@ variable "repository_name" {
 
 variable "docker_hub_username" {
   description = "docker-hub username"
-  default     = "Liannus"
+  default     = "liannus"
   type        = string
 }
 
@@ -41,10 +41,8 @@ variable "docker_hub_password" {
   description = "docker-hub password FILL THROUGH ENV VARIABLES FOR SECURITY"
   type        = string
 }
+
 variable "github_token" {
-  description = "Github token FILL THROUGH ENV VARIABLES FOR SECURITY"
+  description = "github token FILL THROUGH ENV VARIABLES FOR SECURITY"
   type        = string
 }
-
-
-

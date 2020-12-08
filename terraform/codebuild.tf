@@ -1,6 +1,7 @@
 resource "aws_s3_bucket" "codebuild" {
-  bucket = "deploy-apps2"
-  acl    = "private"
+ bucket = "deploy-apps-codebuild"
+ force_destroy = true
+ acl    = "private"
 }
 
 resource "aws_iam_role" "deploy_apps" {
@@ -75,17 +76,24 @@ resource "aws_iam_role_policy" "deploy_apps" {
       "Resource": [
         "*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:Get*"
+      ],
+      "Resource": [
+        "${aws_ssm_parameter.docker-hub-username.arn}",
+        "${aws_ssm_parameter.docker-hub-password.arn}"
+      ]
     }
   ]
 }
 POLICY
 }
 
-data "template_file" "buildspec" {
-  template = "${file("buildspec.yml")}"
-  vars = {
-    env = var.env
-  }
+data "local_file" "buildspec" {
+  filename = "./buildspec.yml"
 }
 
 resource "aws_codebuild_project" "deploy_apps" {
@@ -108,9 +116,10 @@ resource "aws_codebuild_project" "deploy_apps" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/amazonlinux2-x86_64-standard:2.0"
+    image                       = "aws/codebuild/standard:4.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
   }
 
   logs_config {
@@ -125,7 +134,7 @@ resource "aws_codebuild_project" "deploy_apps" {
   }
 
   source {
-    buildspec       = data.template_file.buildspec.rendered
+    buildspec       = data.local_file.buildspec.content
     git_clone_depth = 0
     insecure_ssl    = false
     type            = "CODEPIPELINE"

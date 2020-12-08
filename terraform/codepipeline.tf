@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "deploy-apps1"
+  bucket = "deploy-apps-codepipeline"
+  force_destroy = true
   acl    = "private"
 }
 
@@ -64,7 +65,7 @@ resource "aws_codepipeline" "deploy_apps" {
 }
 
 resource "aws_iam_role" "deploy_apps_codepipeline" {
-  name = "codepipeline-deploy-role"
+  name = "test-role"
 
   assume_role_policy = <<EOF
 {
@@ -126,7 +127,7 @@ resource "random_string" "github_secret" {
 }
 
 resource "aws_codepipeline_webhook" "deploy_apps" {
-  name            = "webhook-github-deploy_apps"
+  name            = "webhook-github-deploy-apps"
   authentication  = "GITHUB_HMAC"
   target_action   = "Source"
   target_pipeline = aws_codepipeline.deploy_apps.name
@@ -151,7 +152,7 @@ resource "github_repository_webhook" "deploy_apps" {
   configuration {
     url          = aws_codepipeline_webhook.deploy_apps.url
     content_type = "json"
-    insecure_ssl = "0"
+    insecure_ssl = true
     secret       = random_string.github_secret.result
   }
 }

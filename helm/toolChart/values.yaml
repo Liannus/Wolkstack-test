@@ -1,7 +1,5 @@
 external-dns:
-  txtOwnerId: "Z00651098F7YS0J2Z27A"
   serviceAccount:
     annotations:
-      {
-        eks.amazonaws.com/role-arn: "arn:aws:iam::310098748428:role/external_dns",
-      }
+      eks.amazonaws.com/role-arn: arn:aws:iam::310098748428:role/external_dns
+  txtOwnerId: Z00651098F7YS0J2Z27A

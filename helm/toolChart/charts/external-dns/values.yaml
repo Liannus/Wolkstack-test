@@ -470,7 +470,10 @@ serviceAccount:
   name:
   ## Annotations for the Service Account
   ##
-  annotations: {}
+  annotations:
+    {
+      eks.amazonaws.com/role-arn: "arn:aws:iam::310098748428:role/external_dns",
+    }
 
 ## RBAC parameteres (clusterRole and clusterRoleBinding)
 ## https://kubernetes.io/docs/reference/access-authn-authz/rbac/

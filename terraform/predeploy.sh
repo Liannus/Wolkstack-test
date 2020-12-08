@@ -3,8 +3,6 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 docker login --username liannus --password $TF_VAR_docker_hub_password
 
-kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager.crds.yaml
-
 echo -e "${GREEN}WOLKSTACK: Building dockerfiles...${NC}"
 docker build ../apps/frontend -t liannus/wolkstack:frontend -f ../apps/frontend/Dockerfile
 docker build ../apps/backend-t liannus/wolkstack:backend -f  ../apps/backend/Dockerfile
